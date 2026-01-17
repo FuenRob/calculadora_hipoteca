@@ -1,16 +1,50 @@
 ---
-
+import MainLayout from "../layouts/MainLayout.astro";
+import Header from "../components/astro/Header.astro";
+import Footer from "../components/astro/Footer.astro";
+import MortgageCalculator from "../components/react/MortgageCalculator";
+import ProductManager from "../components/react/ProductManager";
+import AmortizationTable from "../components/react/AmortizationTable";
+import { EvolutionChart, ComparisonChart } from "../components/react/Charts";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<MainLayout title="Simulador de Hipotecas">
+	<Header />
+
+	<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+		<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+			{/* Columna Izquierda: Configuración */}
+			<div class="lg:col-span-4 space-y-6">
+				<MortgageCalculator client:load />
+				<ProductManager client:load />
+			</div>
+
+			{/* Columna Derecha: Resultados y Gráficos */}
+			<div class="lg:col-span-8 space-y-6">
+				{
+					/* Resumen de KPIs (Podríamos extraerlo a un componente React si necesitamos calculos complejos, 
+            pero por simplicidad y reactividad directa, lo haremos como una isla pequeña si hace falta 
+            o simplemente mostramos la tabla/gráficos que ya son reactivos) 
+        */
+				}
+
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+					<div
+						class="bg-white p-6 rounded-xl shadow-sm border border-slate-100"
+					>
+						<EvolutionChart client:load />
+					</div>
+					<div
+						class="bg-white p-6 rounded-xl shadow-sm border border-slate-100"
+					>
+						<ComparisonChart client:load />
+					</div>
+				</div>
+
+				<AmortizationTable client:load />
+			</div>
+		</div>
+	</main>
+
+	<Footer />
+</MainLayout>
