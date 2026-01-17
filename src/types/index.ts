@@ -1,5 +1,7 @@
 export interface MortgageData {
-    amount: number;              // Capital prestado
+    propertyPrice: number;       // Precio del inmueble
+    downPayment: number;         // Aportación inicial
+    amount: number;              // Capital prestado (propertyPrice - downPayment)
     years: number;               // Plazo en años
     interestType: 'fixed' | 'variable' | 'mixed';
     fixedRate?: number;          // Para fijo/mixto (TIN)

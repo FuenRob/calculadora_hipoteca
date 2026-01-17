@@ -1,5 +1,6 @@
 import { useStore } from '@nanostores/react';
 import { currentCalculation } from '../../stores/mortgageStore';
+import type { MonthlyPayment } from '../../types';
 
 export default function AmortizationTable() {
     const calculation = useStore(currentCalculation);
@@ -24,13 +25,13 @@ export default function AmortizationTable() {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                        {amortizationSchedule.map((row) => (
+                        {amortizationSchedule.map((row: MonthlyPayment) => (
                             <tr key={row.month} className="hover:bg-slate-50 transition-colors">
                                 <td className="px-4 py-2 font-medium text-slate-900">{row.month}</td>
-                                <td className="px-4 py-2 text-right font-mono text-slate-600">{row.payment.toFixed(2)} €</td>
-                                <td className="px-4 py-2 text-right font-mono text-slate-600">{row.principal.toFixed(2)} €</td>
-                                <td className="px-4 py-2 text-right font-mono text-red-500">{row.interest.toFixed(2)} €</td>
-                                <td className="px-4 py-2 text-right font-mono text-slate-600">{row.remainingBalance.toFixed(2)} €</td>
+                                <td className="px-4 py-2 text-right font-mono text-slate-600">{new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.payment)} €</td>
+                                <td className="px-4 py-2 text-right font-mono text-slate-600">{new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.principal)} €</td>
+                                <td className="px-4 py-2 text-right font-mono text-red-500">{new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.interest)} €</td>
+                                <td className="px-4 py-2 text-right font-mono text-slate-600">{new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.remainingBalance)} €</td>
                             </tr>
                         ))}
                     </tbody>
