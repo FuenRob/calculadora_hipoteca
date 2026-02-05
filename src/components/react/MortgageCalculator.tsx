@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStore } from '@nanostores/react';
 import { mortgageData, updateMortgageData } from '../../stores/mortgageStore';
+import type { MortgageData } from '../../types';
 
 type FormattedField = 'amount' | 'propertyPrice' | 'downPayment';
 
@@ -78,9 +79,15 @@ export default function MortgageCalculator() {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
-        // @ts-ignore
-        const val = type === 'number' ? parseFloat(value) : value;
-        updateMortgageData({ [name]: val });
+
+        if (name === 'interestType') {
+            updateMortgageData({ interestType: value as MortgageData['interestType'] });
+            return;
+        }
+
+        if (type === 'number') {
+            updateMortgageData({ [name]: parseFloat(value) } as Partial<MortgageData>);
+        }
     };
 
     return (
