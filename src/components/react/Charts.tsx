@@ -26,6 +26,18 @@ ChartJS.register(
     Filler
 );
 
+function calculateCumulative(schedule: MonthlyPayment[], field: keyof MonthlyPayment) {
+    let accumulated = 0;
+    const result: number[] = [];
+    for (const r of schedule) {
+        accumulated += r[field];
+        if (r.month % 12 === 0) {
+            result.push(accumulated);
+        }
+    }
+    return result;
+}
+
 export function EvolutionChart() {
     const calculation = useStore(currentCalculation);
 
@@ -45,11 +57,7 @@ export function EvolutionChart() {
             },
             {
                 label: 'Intereses Pagados (Acumulado)',
-                data: calculation.amortizationSchedule.filter((r: MonthlyPayment) => r.month % 12 === 0).map((r: MonthlyPayment) => {
-                    // Calculamos acumulado hasta ese punto
-                    // Esto es aproximado para visualizar, idealmente podríamos tener el dato acumulado en el store
-                    return calculation.amortizationSchedule.slice(0, r.month).reduce((acc: number, curr: MonthlyPayment) => acc + curr.interest, 0);
-                }),
+                data: calculateCumulative(calculation.amortizationSchedule, 'interest'),
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
                 fill: true,
@@ -86,20 +94,13 @@ export function ComparisonChart() {
         datasets: [
             {
                 label: 'Total Pagado (Base)',
-                data: base.amortizationSchedule.filter((r: MonthlyPayment) => r.month % 12 === 0).map((r: MonthlyPayment) => {
-                    // Suma de cuotas hasta el año actual
-                    const months = r.month;
-                    return base.amortizationSchedule.slice(0, months).reduce((acc: number, curr: MonthlyPayment) => acc + curr.payment, 0);
-                }),
+                data: calculateCumulative(base.amortizationSchedule, 'payment'),
                 borderColor: 'rgb(156, 163, 175)', // Gray for base
                 backgroundColor: 'rgba(156, 163, 175, 0.5)',
             },
             {
                 label: 'Total Pagado (Con Productos)',
-                data: current.amortizationSchedule.filter((r: MonthlyPayment) => r.month % 12 === 0).map((r: MonthlyPayment) => {
-                    const months = r.month;
-                    return current.amortizationSchedule.slice(0, months).reduce((acc: number, curr: MonthlyPayment) => acc + curr.payment, 0);
-                }),
+                data: calculateCumulative(current.amortizationSchedule, 'payment'),
                 borderColor: 'rgb(34, 197, 94)', // Green for optimized
                 backgroundColor: 'rgba(34, 197, 94, 0.5)',
             },
