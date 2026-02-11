@@ -1,6 +1,7 @@
 import { useStore } from '@nanostores/react';
 import { currentCalculation } from '../../stores/mortgageStore';
 import type { MonthlyPayment } from '../../types';
+import { formatCurrency } from '../../utils/format';
 
 export default function AmortizationTable() {
     const calculation = useStore(currentCalculation);
@@ -28,10 +29,10 @@ export default function AmortizationTable() {
                         {amortizationSchedule.map((row: MonthlyPayment) => (
                             <tr key={row.month} className="hover:bg-slate-50 transition-colors">
                                 <td className="px-4 py-2 font-medium text-slate-900">{row.month}</td>
-                                <td className="px-4 py-2 text-right font-mono text-slate-600">{new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.payment)} €</td>
-                                <td className="px-4 py-2 text-right font-mono text-slate-600">{new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.principal)} €</td>
-                                <td className="px-4 py-2 text-right font-mono text-red-500">{new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.interest)} €</td>
-                                <td className="px-4 py-2 text-right font-mono text-slate-600">{new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.remainingBalance)} €</td>
+                                <td className="px-4 py-2 text-right font-mono text-slate-600">{formatCurrency(row.payment)} €</td>
+                                <td className="px-4 py-2 text-right font-mono text-slate-600">{formatCurrency(row.principal)} €</td>
+                                <td className="px-4 py-2 text-right font-mono text-red-500">{formatCurrency(row.interest)} €</td>
+                                <td className="px-4 py-2 text-right font-mono text-slate-600">{formatCurrency(row.remainingBalance)} €</td>
                             </tr>
                         ))}
                     </tbody>
