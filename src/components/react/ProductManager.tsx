@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useStore } from '@nanostores/react';
 import { products, addProduct, toggleProductSelection, removeProduct } from '../../stores/mortgageStore';
+import { formatCurrencyCompact, formatPercent } from '../../utils/format';
 
 export default function ProductManager() {
     const allProducts = useStore(products);
@@ -89,9 +90,9 @@ export default function ProductManager() {
                             <div>
                                 <h3 className="font-semibold text-slate-800">{product.name}</h3>
                                 <p className="text-sm text-slate-500">
-                                    Coste: <span className="font-medium text-slate-700">{new Intl.NumberFormat('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(product.monthlyCost)} €/mes</span>
+                                    Coste: <span className="font-medium text-slate-700">{formatCurrencyCompact(product.monthlyCost)} €/mes</span>
                                     {' • '}
-                                    Bonificación: <span className="font-medium text-green-600">-{new Intl.NumberFormat('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 2 }).format(product.interestReduction)}%</span>
+                                    Bonificación: <span className="font-medium text-green-600">-{formatPercent(product.interestReduction)}%</span>
                                 </p>
                             </div>
                         </div>

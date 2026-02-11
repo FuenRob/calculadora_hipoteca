@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useStore } from '@nanostores/react';
 import { mortgageData, updateMortgageData } from '../../stores/mortgageStore';
 import type { MortgageData } from '../../types';
+import { formatNumber } from '../../utils/format';
 
 type FormattedField = 'amount' | 'propertyPrice' | 'downPayment';
 
@@ -15,7 +16,7 @@ export default function MortgageCalculator() {
 
     const formatValue = (val: number | undefined) => {
         if (val === undefined || val === null) return '';
-        return new Intl.NumberFormat('es-ES').format(val);
+        return formatNumber(val);
     };
 
     // Generic sync function
@@ -67,7 +68,7 @@ export default function MortgageCalculator() {
         if (integerPart) {
             const parsedInt = parseFloat(integerPart);
             if (!isNaN(parsedInt)) {
-                integerPart = new Intl.NumberFormat('es-ES').format(parsedInt);
+                integerPart = formatNumber(parsedInt);
             }
         }
         let newDisplay = integerPart;
