@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useStore } from '@nanostores/react';
-import { products, addProduct, toggleProductSelection, removeProduct } from '../../stores/mortgageStore';
+import { productAnalysis, addProduct, toggleProductSelection, removeProduct } from '../../stores/mortgageStore';
 import { formatCurrencyCompact, formatPercent } from '../../utils/format';
 
 export default function ProductManager() {
-    const allProducts = useStore(products);
+    const analysis = useStore(productAnalysis);
     const [isAdding, setIsAdding] = useState(false);
     const [newProduct, setNewProduct] = useState({ name: '', monthlyCost: 0, interestReduction: 0 });
 
@@ -14,6 +14,9 @@ export default function ProductManager() {
         setNewProduct({ name: '', monthlyCost: 0, interestReduction: 0 });
         setIsAdding(false);
     };
+
+    const formatCurrency = (val: number) =>
+        new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(val);
 
     return (
         <div className="bg-white p-6 rounded-xl shadow-lg border border-slate-100 mt-6">
@@ -71,41 +74,85 @@ export default function ProductManager() {
             )}
 
             <div className="grid gap-4">
-                {allProducts.map(product => (
-                    <div
-                        key={product.id}
-                        className={`p-4 rounded-lg border transition-all duration-200 cursor-pointer flex justify-between items-center
-              ${product.selected
-                                ? 'bg-blue-50 border-blue-500 ring-1 ring-blue-500'
-                                : 'bg-white border-slate-200 hover:border-blue-300'}`}
-                        onClick={() => toggleProductSelection(product.id)}
-                    >
-                        <div className="flex items-center gap-3">
-                            <input
-                                type="checkbox"
-                                checked={product.selected}
-                                onChange={() => { }} // Handled by div click
-                                className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
-                            />
-                            <div>
-                                <h3 className="font-semibold text-slate-800">{product.name}</h3>
-                                <p className="text-sm text-slate-500">
-                                    Coste: <span className="font-medium text-slate-700">{formatCurrencyCompact(product.monthlyCost)} €/mes</span>
-                                    {' • '}
-                                    Bonificación: <span className="font-medium text-green-600">-{formatPercent(product.interestReduction)}%</span>
-                                </p>
+                {analysis.map((item) => {
+                    const { product, netBenefit, recommended, breakevenMonth, totalSavings, totalCost } = item;
+                    return (
+                        <div
+                            key={product.id}
+                            className={`p-4 rounded-lg border transition-all duration-200 cursor-pointer
+                                ${product.selected
+                                    ? 'bg-blue-50 border-blue-500 ring-1 ring-blue-500'
+                                    : 'bg-white border-slate-200 hover:border-blue-300'}`}
+                            onClick={() => toggleProductSelection(product.id)}
+                        >
+                            <div className="flex flex-col sm:flex-row justify-between gap-4">
+                                <div className="flex items-start gap-3 flex-1">
+                                    <input
+                                        type="checkbox"
+                                        checked={product.selected}
+                                        onChange={() => { }} // Handled by div click
+                                        className="mt-1 w-5 h-5 text-blue-600 rounded focus:ring-blue-500 flex-shrink-0"
+                                    />
+                                    <div className="w-full">
+                                        <div className="flex justify-between items-start flex-wrap gap-2">
+                                            <h3 className="font-semibold text-slate-800">{product.name}</h3>
+                                            {recommended ? (
+                                                <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full font-bold whitespace-nowrap">
+                                                    ✓ Recomendado
+                                                </span>
+                                            ) : (
+                                                <span className="bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded-full font-medium whitespace-nowrap">
+                                                    ✗ No compensa
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        <div className="text-sm text-slate-500 mt-2 space-y-1">
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1">
+                                                <div>
+                                                    Coste: <span className="font-medium text-slate-700">{formatCurrencyCompact(product.monthlyCost)} €/mes</span>
+                                                </div>
+                                                <div>
+                                                    Bonificación: <span className="font-medium text-green-600">-{formatPercent(product.interestReduction)}%</span>
+                                                </div>
+                                            </div>
+
+                                            <div className="pt-2 mt-2 border-t border-slate-100 text-xs space-y-1">
+                                                <div className="flex justify-between">
+                                                    <span>Ahorro total en intereses:</span>
+                                                    <span className="font-semibold text-green-600">{formatCurrency(totalSavings)}</span>
+                                                </div>
+                                                <div className="flex justify-between">
+                                                    <span>Coste total del producto:</span>
+                                                    <span className="font-semibold text-red-600">{formatCurrency(totalCost)}</span>
+                                                </div>
+                                                <div className="flex justify-between pt-1 border-t border-slate-100">
+                                                    <span className="font-bold">Beneficio neto:</span>
+                                                    <span className={`font-bold ${netBenefit > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                        {formatCurrency(netBenefit)}
+                                                    </span>
+                                                </div>
+                                                {breakevenMonth && (
+                                                    <div className="text-slate-400 italic">
+                                                        Se amortiza en el mes {breakevenMonth}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button
+                                    onClick={(e) => { e.stopPropagation(); removeProduct(product.id); }}
+                                    className="self-start sm:self-center px-3 py-1 text-red-500 hover:bg-red-50 rounded transition-colors text-sm whitespace-nowrap"
+                                >
+                                    Eliminar
+                                </button>
                             </div>
                         </div>
-
-                        <button
-                            onClick={(e) => { e.stopPropagation(); removeProduct(product.id); }}
-                            className="px-2 py-1 text-red-500 hover:bg-red-50 rounded transition-colors"
-                        >
-                            Eliminar
-                        </button>
-                    </div>
-                ))}
-                {allProducts.length === 0 && (
+                    );
+                })}
+                {analysis.length === 0 && (
                     <p className="text-center text-slate-400 py-4">No hay productos definidos</p>
                 )}
             </div>
