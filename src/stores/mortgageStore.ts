@@ -32,8 +32,8 @@ export const currentCalculation = computed([mortgageData, products], (data, curr
 });
 
 // Análisis de productos
-export const productAnalysis = computed([mortgageData, products], (data, currentProducts) => {
-    return analyzeProducts(data, currentProducts);
+export const productAnalysis = computed([mortgageData, products, baseCalculation], (data, currentProducts, base) => {
+    return analyzeProducts(data, currentProducts, base);
 });
 
 export function updateMortgageData(newData: Partial<MortgageData>) {
