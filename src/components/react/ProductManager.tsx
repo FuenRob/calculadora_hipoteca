@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useStore } from '@nanostores/react';
 import { productAnalysis, addProduct, toggleProductSelection, removeProduct } from '../../stores/mortgageStore';
-import { formatCurrencyCompact, formatPercent } from '../../utils/format';
+import { formatCurrencyCompact, formatPercent, formatCurrencyWhole } from '../../utils/format';
 
 export default function ProductManager() {
     const analysis = useStore(productAnalysis);
@@ -14,9 +14,6 @@ export default function ProductManager() {
         setNewProduct({ name: '', monthlyCost: 0, interestReduction: 0 });
         setIsAdding(false);
     };
-
-    const formatCurrency = (val: number) =>
-        new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(val);
 
     return (
         <div className="bg-white p-6 rounded-xl shadow-lg border border-slate-100 mt-6">
@@ -120,16 +117,16 @@ export default function ProductManager() {
                                             <div className="pt-2 mt-2 border-t border-slate-100 text-xs space-y-1">
                                                 <div className="flex justify-between">
                                                     <span>Ahorro total en intereses:</span>
-                                                    <span className="font-semibold text-green-600">{formatCurrency(totalSavings)}</span>
+                                                    <span className="font-semibold text-green-600">{formatCurrencyWhole(totalSavings)}</span>
                                                 </div>
                                                 <div className="flex justify-between">
                                                     <span>Coste total del producto:</span>
-                                                    <span className="font-semibold text-red-600">{formatCurrency(totalCost)}</span>
+                                                    <span className="font-semibold text-red-600">{formatCurrencyWhole(totalCost)}</span>
                                                 </div>
                                                 <div className="flex justify-between pt-1 border-t border-slate-100">
                                                     <span className="font-bold">Beneficio neto:</span>
                                                     <span className={`font-bold ${netBenefit > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                                        {formatCurrency(netBenefit)}
+                                                        {formatCurrencyWhole(netBenefit)}
                                                     </span>
                                                 </div>
                                                 {breakevenMonth && (
