@@ -1,9 +1,8 @@
-import type { MortgageData, BankProduct, ProductAnalysis } from '../types';
+import type { MortgageData, BankProduct, ProductAnalysis, CalculationResult } from '../types';
 import { calculateMortgage } from './mortgageCalculations';
 
-export function analyzeProducts(data: MortgageData, products: BankProduct[]): ProductAnalysis[] {
+export function analyzeProducts(data: MortgageData, products: BankProduct[], baseResult: CalculationResult): ProductAnalysis[] {
     // 1. Escenario base sin productos
-    const baseResult = calculateMortgage(data);
     const baseTotalInterest = baseResult.totalInterest;
 
     // 2. Analizar cada producto individualmente (o acumulado, según instrucciones)
