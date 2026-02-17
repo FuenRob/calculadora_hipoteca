@@ -13,10 +13,21 @@ const percentFormatter = new Intl.NumberFormat('es-ES', {
     maximumFractionDigits: 2
 });
 
+const currencyWholeFormatter = new Intl.NumberFormat('es-ES', {
+    style: 'currency',
+    currency: 'EUR',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+});
+
 const numberFormatter = new Intl.NumberFormat('es-ES');
 
 export function formatCurrency(value: number): string {
     return currencyFormatter.format(value);
+}
+
+export function formatCurrencyWhole(value: number): string {
+    return currencyWholeFormatter.format(value);
 }
 
 export function formatCurrencyCompact(value: number): string {
