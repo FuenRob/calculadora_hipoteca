@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useStore } from '@nanostores/react';
 import { mortgageData, updateMortgageData } from '../../stores/mortgageStore';
 import type { MortgageData } from '../../types';
 import { formatNumber } from '../../utils/format';
+import { debounce } from '../../utils/debounce';
 
 type FormattedField = 'amount' | 'propertyPrice' | 'downPayment';
 
@@ -18,6 +19,11 @@ export default function MortgageCalculator() {
         if (val === undefined || val === null) return '';
         return formatNumber(val);
     };
+
+    const debouncedUpdate = useMemo(
+        () => debounce((data: Partial<MortgageData>) => updateMortgageData(data), 300),
+        []
+    );
 
     // Generic sync function
     useEffect(() => {
@@ -57,9 +63,9 @@ export default function MortgageCalculator() {
 
         // Update Store
         if (!isNaN(numValue)) {
-            updateMortgageData({ [field]: numValue });
+            debouncedUpdate({ [field]: numValue });
         } else if (val === '') {
-            updateMortgageData({ [field]: 0 });
+            debouncedUpdate({ [field]: 0 });
         }
 
         // Format Display

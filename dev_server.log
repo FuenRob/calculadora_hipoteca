@@ -1,0 +1,31 @@
+
+> dev
+> astro dev
+
+07:38:09 [types] Generated 1ms
+07:38:09 [content] Syncing content
+07:38:09 [content] Synced content
+07:38:09 [vite] Re-optimizing dependencies because vite config has changed
+
+ astro  v5.16.11 ready in 373 ms
+
+┃ Local    http://localhost:4321/
+┃ Network  use --host to expose
+
+07:38:09 watching for file changes...
+
+ update  ▶ New version of Astro available: 5.17.2
+  Run npx @astrojs/upgrade to update
+
+07:38:36 Configuration file updated. Restarting...
+07:38:36 [vite] Re-optimizing dependencies because vite config has changed
+07:38:37 [content] Syncing content
+07:38:37 [content] Synced content
+07:38:37 [types] Generated 240ms
+07:38:37 [vite] Re-optimizing dependencies because lockfile has changed
+07:39:24 [200] / 270ms
+07:40:13 [watch] verify_mortgage_calculator.cjs
+07:40:13 [watch] verify_mortgage_calculator.cjs
+07:40:20 [200] / 151ms
+07:40:34 [watch] verify_mortgage_calculator.cjs
+07:40:34 [watch] verify_mortgage_calculator.cjs
