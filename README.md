@@ -1,43 +1,49 @@
-# Astro Starter Kit: Minimal
+# Simulador de Hipotecas
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Aplicación web para simular y calcular todos los aspectos relacionados con una hipoteca, incluyendo la evaluación de productos bancarios asociados que reducen el tipo de interés.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 🚀 Características Principales
 
-## 🚀 Project Structure
+- **Cálculo de Hipoteca**: Soporte para tipos de interés fijo, variable y mixto. Cálculo de cuota mensual, intereses totales y amortización.
+- **Gestión de Productos Bancarios**: Análisis de productos que ofrecen bonificaciones en el tipo de interés (ej. domiciliación de nómina, seguros).
+- **Análisis de Rentabilidad**: Evaluación de si merece la pena contratar productos bancarios vinculados, calculando el ahorro total vs el coste del producto y su punto de equilibrio.
+- **Visualización de Datos**: Gráficos interactivos para la evolución del capital, intereses pagados, comparativas y más.
+- **Amortizaciones Anticipadas**: Simulación de pagos extraordinarios reduciendo cuota o reduciendo plazo.
 
-Inside of your Astro project, you'll see the following folders and files:
+## 🛠️ Stack Tecnológico
+
+- **Framework**: [Astro](https://astro.build/) - Rendimiento excepcional usando SSG y arquitectura de islas.
+- **UI Interactiva**: [React](https://reactjs.org/) - Componentes interactivos para calculadoras y gráficos.
+- **Gestión de Estado**: [Nanostores](https://github.com/nanostores/nanostores) - Ligero e ideal para compartir estado entre islas de React.
+- **Estilación**: [Tailwind CSS](https://tailwindcss.com/) - Diseño responsivo (mobile-first).
+- **Gráficos**: [Chart.js](https://www.chartjs.org/) mediante `react-chartjs-2`.
+- **Validación**: [Zod](https://zod.dev/) - Validación de formularios y tipos estrictos.
+
+## 🧞 Comandos de Desarrollo
+
+Desde el directorio raíz del proyecto, puedes ejecutar los siguientes comandos en tu terminal:
+
+| Comando                   | Acción                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Instala todas las dependencias del proyecto      |
+| `npm run dev`             | Inicia el servidor de desarrollo en `localhost:4321` |
+| `npm run build`           | Construye la versión de producción en `./dist/`  |
+| `npm run preview`         | Previsualiza el proyecto construido localmente   |
+| `npm run astro -- --help` | Obtiene ayuda sobre el CLI de Astro              |
+
+## 📁 Estructura del Proyecto
 
 ```text
 /
-├── public/
+├── public/                # Archivos estáticos e imágenes
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── components/
+│   │   ├── astro/         # Componentes UI estáticos (Header, Layout, etc.)
+│   │   └── react/         # Islas interactivas principales (calculadoras, gráficos)
+│   ├── layouts/           # Diseños base compartidos
+│   ├── pages/             # Rutas (ej. index.astro)
+│   ├── stores/            # Estado de Nanostores
+│   ├── types/             # Definiciones de TypeScript (.ts)
+│   └── utils/             # Lógica de cálculo financiero
+└── package.json           # Dependencias y scripts
 ```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
