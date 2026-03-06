@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useStore } from '@nanostores/react';
 import { mortgageData, updateMortgageData } from '../../stores/mortgageStore';
 import type { MortgageData } from '../../types';
@@ -47,7 +47,8 @@ export default function MortgageCalculator() {
     }, [data.amount, data.propertyPrice, data.downPayment]);
 
 
-    const handleFormattedChange = (field: FormattedField) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFormattedChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        const field = e.target.name as FormattedField;
         const val = e.target.value;
         if (!/^[\d.,]*$/.test(val)) return;
 
@@ -76,9 +77,9 @@ export default function MortgageCalculator() {
         else if (val.endsWith(',')) newDisplay += ',';
 
         setLocalFields(prev => ({ ...prev, [field]: newDisplay }));
-    };
+    }, []);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
 
         if (name === 'interestType') {
@@ -89,7 +90,7 @@ export default function MortgageCalculator() {
         if (type === 'number') {
             updateMortgageData({ [name]: parseFloat(value) } as Partial<MortgageData>);
         }
-    };
+    }, []);
 
     return (
         <div className="bg-white p-6 rounded-xl shadow-lg border border-slate-100">
@@ -101,9 +102,10 @@ export default function MortgageCalculator() {
                     <label htmlFor="propertyPrice" className="block text-sm font-medium text-slate-700">Precio Inmueble (€)</label>
                     <input
                         id="propertyPrice"
+                        name="propertyPrice"
                         type="text"
                         value={localFields.propertyPrice}
-                        onChange={handleFormattedChange('propertyPrice')}
+                        onChange={handleFormattedChange}
                         className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                     />
                 </div>
@@ -112,9 +114,10 @@ export default function MortgageCalculator() {
                     <label htmlFor="downPayment" className="block text-sm font-medium text-slate-700">Aportación Inicial (€)</label>
                     <input
                         id="downPayment"
+                        name="downPayment"
                         type="text"
                         value={localFields.downPayment}
-                        onChange={handleFormattedChange('downPayment')}
+                        onChange={handleFormattedChange}
                         className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                     />
                 </div>
@@ -123,10 +126,11 @@ export default function MortgageCalculator() {
                     <label htmlFor="amount" className="block text-sm font-medium text-slate-700">Importe Préstamo (€)</label>
                     <input
                         id="amount"
+                        name="amount"
                         type="text"
                         aria-describedby="amount-helper"
                         value={localFields.amount}
-                        onChange={handleFormattedChange('amount')}
+                        onChange={handleFormattedChange}
                         className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-slate-50"
                     />
                     <p id="amount-helper" className="text-xs text-slate-500 mt-1">Calculado automáticamente (Precio - Aportación)</p>
