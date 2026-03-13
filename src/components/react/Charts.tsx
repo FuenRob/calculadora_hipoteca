@@ -26,18 +26,6 @@ ChartJS.register(
     Filler
 );
 
-function calculateCumulative(schedule: MonthlyPayment[], field: keyof MonthlyPayment) {
-    let accumulated = 0;
-    const result: number[] = [];
-    for (const r of schedule) {
-        accumulated += r[field];
-        if (r.month % 12 === 0) {
-            result.push(accumulated);
-        }
-    }
-    return result;
-}
-
 export function EvolutionChart() {
     const calculation = useStore(currentCalculation);
 
@@ -45,19 +33,33 @@ export function EvolutionChart() {
         return <div className="h-64 flex items-center justify-center text-gray-400">No hay datos disponibles</div>;
     }
 
+    const labels: string[] = [];
+    const balanceData: number[] = [];
+    const interestData: number[] = [];
+    let accumulatedInterest = 0;
+
+    for (const r of calculation.amortizationSchedule) {
+        accumulatedInterest += r.interest;
+        if (r.month % 12 === 0) {
+            labels.push(`Año ${r.month / 12}`);
+            balanceData.push(r.remainingBalance);
+            interestData.push(accumulatedInterest);
+        }
+    }
+
     const data = {
-        labels: calculation.amortizationSchedule.filter((r: MonthlyPayment) => r.month % 12 === 0).map((r: MonthlyPayment) => `Año ${r.month / 12}`),
+        labels,
         datasets: [
             {
                 label: 'Capital Pendiente',
-                data: calculation.amortizationSchedule.filter((r: MonthlyPayment) => r.month % 12 === 0).map((r: MonthlyPayment) => r.remainingBalance),
+                data: balanceData,
                 borderColor: 'rgb(53, 162, 235)',
                 backgroundColor: 'rgba(53, 162, 235, 0.5)',
                 fill: true,
             },
             {
                 label: 'Intereses Pagados (Acumulado)',
-                data: calculateCumulative(calculation.amortizationSchedule, 'interest'),
+                data: interestData,
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
                 fill: true,
@@ -89,18 +91,40 @@ export function ComparisonChart() {
         return <div className="h-64 flex items-center justify-center text-gray-400">No hay datos para comparar</div>;
     }
 
+    const labels: string[] = [];
+    const basePaymentData: number[] = [];
+    let accumulatedBasePayment = 0;
+
+    for (const r of base.amortizationSchedule) {
+        accumulatedBasePayment += r.payment;
+        if (r.month % 12 === 0) {
+            labels.push(`Año ${r.month / 12}`);
+            basePaymentData.push(accumulatedBasePayment);
+        }
+    }
+
+    const currentPaymentData: number[] = [];
+    let accumulatedCurrentPayment = 0;
+
+    for (const r of current.amortizationSchedule) {
+        accumulatedCurrentPayment += r.payment;
+        if (r.month % 12 === 0) {
+            currentPaymentData.push(accumulatedCurrentPayment);
+        }
+    }
+
     const data = {
-        labels: base.amortizationSchedule.filter((r: MonthlyPayment) => r.month % 12 === 0).map((r: MonthlyPayment) => `Año ${r.month / 12}`),
+        labels,
         datasets: [
             {
                 label: 'Total Pagado (Base)',
-                data: calculateCumulative(base.amortizationSchedule, 'payment'),
+                data: basePaymentData,
                 borderColor: 'rgb(156, 163, 175)', // Gray for base
                 backgroundColor: 'rgba(156, 163, 175, 0.5)',
             },
             {
                 label: 'Total Pagado (Con Productos)',
-                data: calculateCumulative(current.amortizationSchedule, 'payment'),
+                data: currentPaymentData,
                 borderColor: 'rgb(34, 197, 94)', // Green for optimized
                 backgroundColor: 'rgba(34, 197, 94, 0.5)',
             },
