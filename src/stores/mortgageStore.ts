@@ -17,7 +17,7 @@ export const mortgageData = atom<MortgageData>({
 
 export const products = atom<BankProduct[]>([
     { id: '1', name: 'Nómina', monthlyCost: 0, interestReduction: 0.5, selected: false },
-    { id: '2', name: 'Seguro de Hogar', monthlyCost: 20, interestReduction: 0.2, selected: false },
+    { id: '2', name: 'Seguro de Hogar', monthlyCost: 90, interestReduction: 0.2, selected: false },
     { id: '3', name: 'Seguro de Vida', monthlyCost: 30, interestReduction: 0.3, selected: false },
 ]);
 
