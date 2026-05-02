@@ -8,6 +8,9 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   integrations: [react()],
 
+  site: 'https://fuenrob.github.io',
+  base: '/calculadora_hipoteca',
+
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {
