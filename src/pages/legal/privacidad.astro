@@ -1,0 +1,50 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import Header from "../../components/astro/Header.astro";
+import Footer from "../../components/astro/Footer.astro";
+---
+
+<MainLayout title="Política de Privacidad - Simulador de Hipotecas">
+    <Header />
+    <main class="max-w-3xl mx-auto px-4 py-12">
+        <h1 class="text-3xl font-bold mb-8 text-slate-900 border-b border-slate-100 pb-4">Política de Privacidad</h1>
+        
+        <section class="mb-10">
+            <h2 class="text-xl font-semibold mb-4 text-slate-800 flex items-center gap-2">
+                <span class="w-1.5 h-6 bg-blue-500 rounded-full"></span>
+                1. Compromiso de Privacidad
+            </h2>
+            <p class="text-slate-600 mb-4 leading-relaxed">
+                Esta aplicación ha sido diseñada respetando la privacidad del usuario. <strong class="text-slate-800">No se solicita, recoge ni almacena ningún dato de carácter personal</strong> (nombre, correo electrónico, teléfono, etc.) para el uso del simulador.
+            </p>
+            <p class="text-slate-600 leading-relaxed">
+                Todos los cálculos se realizan de forma local en su navegador. Los datos introducidos en el formulario no se envían a ningún servidor externo ni se guardan en bases de datos.
+            </p>
+        </section>
+
+        <section class="mb-10">
+            <h2 class="text-xl font-semibold mb-4 text-slate-800 flex items-center gap-2">
+                <span class="w-1.5 h-6 bg-blue-500 rounded-full"></span>
+                2. Datos de Navegación
+            </h2>
+            <p class="text-slate-600 leading-relaxed">
+                El sitio web está alojado en GitHub Pages. GitHub puede recolectar registros del servidor que incluyen su dirección IP con fines de seguridad y mantenimiento del servicio. Este tratamiento de datos se rige por la política de privacidad de GitHub.
+            </p>
+        </section>
+
+        <section class="mb-10">
+            <h2 class="text-xl font-semibold mb-4 text-slate-800 flex items-center gap-2">
+                <span class="w-1.5 h-6 bg-blue-500 rounded-full"></span>
+                3. Enlaces a Terceros
+            </h2>
+            <p class="text-slate-600 leading-relaxed">
+                En caso de existir enlaces a sitios web de terceros (como bancos o fuentes de noticias), esta política de privacidad dejará de tener vigor al abandonar nuestro sitio web. No somos responsables de las prácticas de privacidad de otros sitios.
+            </p>
+        </section>
+
+        <div class="mt-12 text-sm text-slate-400">
+            Última actualización: Mayo 2026
+        </div>
+    </main>
+    <Footer />
+</MainLayout>
